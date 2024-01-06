@@ -21,6 +21,15 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require("connect-mongo");
 
+// const csp = require('express-csp-header');
+// app.use(csp({
+//     policies: {
+//         'default-src': [csp.NONE],
+//         'img-src': [csp.SELF],
+//         'script-scr': [csp.SELF],
+//     }
+// }));
+
 
 const PORT = process.env.PORT || 8000;
 // const dbUrl = process.env.DB_URL || 'mongodb://0.0.0.0:27017/SMP';
@@ -95,6 +104,13 @@ const requireLogin = (req, res, next) => {
     }
     next();
 }
+// const successCallback = (position) => {
+//     console.log(position);
+// };
+// const errorCallback = (err) => {
+//     console.log(err);
+// };
+// navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 
 
 
