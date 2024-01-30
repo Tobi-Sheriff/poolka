@@ -1,0 +1,32 @@
+<nav class="navbar">
+    <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+        <img src="../images/poolkaaa.png" alt="poolka" width="150" height="30">
+    </a>
+    <div class="login-menu">
+        <ul>
+        <li>
+            <% if (!currentUser) {%>
+            <a href="/login">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <span class="padding_5">Login</span>
+            </a>
+            <% } else { %>
+                <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span class="padding_5">
+                    <%= currentUser.username %>
+                    </span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="markets/new">Profile</a><li>
+                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                </ul>                  
+                </div>
+            <% } %>
+        </li>
+        </ul>
+    </div>
+    </div>
+</nav>

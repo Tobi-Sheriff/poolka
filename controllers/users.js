@@ -3,10 +3,9 @@ const User = require('../models/user');
 module.exports.renderRegister = (req, res) => {
     res.render('users/register');
 }
-
 module.exports.register = async (req, res, next) => {
     try {
-        const { email, username, password } = req.body;
+        const { email, username, password} = req.body;
         const user = new User({ email, username });
         const registeredUser = await User.register(user, password);
         req.login(registeredUser, err => {
@@ -23,12 +22,24 @@ module.exports.register = async (req, res, next) => {
 module.exports.renderLogin = (req, res) => {
     res.render('users/login');
 }
-
 module.exports.login = (req, res) => {
+    // const f = req.user;
     req.flash('success', 'welcome back!');
     const redirectUrl = req.session.returnTo || ('/pages');
     delete req.session.returnTo;
     res.redirect(redirectUrl);
+}
+
+module.exports.renderProfile = (req, res) => {
+    res.render('users/profile');
+}
+module.exports.updateUserProfile = async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findByIdAndUpdate(id, { ...req.body.profile });
+    console.log(user);
+    await user.save();
+    req.flash('success', 'Successfully updated user!');
+    res.redirect('/pages')
 }
 
 module.exports.logout = (req, res) => {

@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate')%>
+
+<section id="info" class="container">
+    <div class="info-inner-container">
+        <div class="welcome-message">
+            <h1>POOLKA</h1>
+            <p>
+                WELCOME<br>
+                Please Create Your Profile</button>
+            </p>
+            <!-- campground._id?_method=PUT -->
+            <form action="/users/profile/<%= currentUser._id %>?_method=PUT" method="POST" class="form-box validated-form" novalidate>
+                <label for="firstName">First Name</label>
+                <input class="form-control" type="email" name="profile[firstName]" id="firstName" required />
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+
+                <label for="secondName">Second Name</label>
+                <input class="form-control" type="text" name="profile[secondName]" id="secondName" required />
+
+                <label for="role">Staffing</label>
+                <input class="form-control" type="text" name="profile[role]" id="role" required />
+
+                <input type="submit" class="form-control submit-btn">
+            </form>
+        </div>
+    </div>
+</section>

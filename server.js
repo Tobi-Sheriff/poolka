@@ -15,20 +15,15 @@ const User = require('./models/user');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const userRoutes = require('./routes/users');
+// const profileRoutes = require('./routes/profiles');
 const pageRoutes = require('./routes/pages');
 const ExpressError = require('./utils/ExpressError');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require("connect-mongo");
+// const bodyParser = require('body-parser')
 
-// const csp = require('express-csp-header');
-// app.use(csp({
-//     policies: {
-//         'default-src': [csp.NONE],
-//         'img-src': [csp.SELF],
-//         'script-scr': [csp.SELF],
-//     }
-// }));
+// const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
 
 const PORT = process.env.PORT || 8000;
@@ -47,6 +42,7 @@ app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -78,9 +74,51 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 };
+
 app.use(session(sessionConfig));
 app.use(flash());
-app.use(helmet());
+app.use(helmet({
+    xContentTypeOptions: {
+        noSniff: false,
+    },
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            connectSrc: ["'self'", 'https://maps.googleapis.com/'],
+            // styleSrc: ['http://localhost:8000', 'https://cdn.jsdelivr.net'],
+            scriptSrc: [
+                "'self'",
+                'http://localhost:8000',
+                'https://cdn.jsdelivr.net',
+                'https://maps.googleapis.com/'],
+            fontSrc: ["https://cdnjs.cloudflare.com"],
+            imgSrc: [
+                "'self'",
+                'http://localhost:8000',
+                "https://maps.gstatic.com",
+                "blob:",
+                "data:",
+            ]
+
+            // Add more directives as needed
+
+            // defaultSrc: [],
+            // connectSrc: ["'self'", ...connectSrcUrls],
+            // scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            // styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            // workerSrc: ["'self'", "blob:"],
+            // objectSrc: [],
+            // imgSrc: [
+            //     "'self'",
+            //     "blob:",
+            //     "data:",
+            //     "https://res.cloudinary.com/dfh1oel6o/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+            //     "https://images.unsplash.com/",
+            // ],
+            // fontSrc: ["'self'", ...fontSrcUrls],
+        }
+    },
+}));
 
 
 app.use(passport.initialize());
@@ -104,19 +142,12 @@ const requireLogin = (req, res, next) => {
     }
     next();
 }
-// const successCallback = (position) => {
-//     console.log(position);
-// };
-// const errorCallback = (err) => {
-//     console.log(err);
-// };
-// navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 
 
 
-// app.get('/', (req, res) => {
-//     res.render('pages');
-// });
+app.get('/home', (req, res) => {
+    res.render('home');
+});
 app.use('/', userRoutes);
 app.use('/pages', pageRoutes);
 // app.use('/campgrounds/:id/reviews', reviewRoutes);

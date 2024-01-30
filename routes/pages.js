@@ -10,9 +10,14 @@ const upload = multer({ storage });
 
 router.route('/')
     .get(catchAsync(pages.index))
-    .post(isLoggedIn, upload.array('image'), validatePage, catchAsync(pages.createPage))
+    .post(pages.requestRide)
+
+// router.get('/autocomplete', pages.autoComplete)
+// router.get('/places-proxy', pages.placesProxy)
 
 router.get('/new', isLoggedIn, pages.renderNewForm)
+
+router.get('/show', pages.pageShow)
 
 router.route('/:id')
     .get(catchAsync(pages.showPage))
