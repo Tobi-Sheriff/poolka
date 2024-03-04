@@ -74,3 +74,7 @@ if (navigator) {
 //     // Rest of your Autocomplete setup
 // }
 // initAutocomplete();
+
+
+// const staffRole = document.querySelector('#staffRole');
+// console.log(staffRole.innerText);

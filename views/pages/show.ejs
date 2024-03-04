@@ -1,9 +1,98 @@
 <% layout('layouts/boilerplate')%>
 
-<div class="container-show">
-    <h3>Thank You Your Request has been sent</h3>
-    <div class="user-address">
-        <p class="">Location: <span><%= location %></span></p>
-        <p class="">Destination: <span><%= destination %></span></p>
-    </div>
-</div>
+  <div class="container-show">
+    <% if( currentUser && currentUser.role==='admin' ) { %>
+      <div class="container text-center">
+        <div class="row">
+          <div class="col-lg-3">
+            <h3>Staff request</h3>
+            <div class="admin-show-side-nav">
+              <p class="">ID: <span><%= request._id %></span></p>
+              <p class="">Location: <span><%= request.location %></span> </p>
+              <p class="">Destination: <span><%= request.destination %></span></p>
+              <p class="">By: <span><%= request.author.username %></span></p>
+              <div class="form-side-nav">
+                <form class="" action="#" method="POST">                
+                  <label class="" for="">Enter Driver ID</label>
+                  <input class="form-control" id="" name="" required />
+                  <button class="btn btn-secondary form-control">Connect</button>
+                </form>
+                <form action="/pages/<%=request._id%>/request/?_method=DELETE" method="POST">
+                  <button class="btn btn-danger form-control">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-9">
+            <h3>Available drivers</h3>
+            <div class="row">
+              <% for (let user of users){%>
+                <% if (user.role === 'driver') { %>
+                  <div class="card driver-nav-child col-lg-4">
+                    <img src="../images/carimg.jpg" class="card-img-top" alt="...">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item"><%= user._id %></li>
+                      <li class="list-group-item"><%= user.username %></li>
+                      <li class="list-group-item">status</li>
+                    </ul>
+                    <div class="card-body">
+                      <a href="#" class="card-link">Card link</a>
+                      <a href="#" class="card-link">Another link</a>
+                    </div>
+                  </div>
+                <!-- else if (!(user.role == 'driver'))
+                  <div>
+                    <p>NO AVAILABLE DRIVER</p>
+                    break 
+                  </div> -->
+                <% } %>
+              <% } %>
+              <!-- <div class="card driver-nav-child">
+                <img src="../images/carimg.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title" style="color: white;">Card title</h5>
+                  <p class="card-text">Some quick example text to build on.</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Driver ID</li>
+                  <li class="list-group-item">Driver Name</li>
+                </ul>
+                <div class="card-body">
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div> -->
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    <% } else if( currentUser && currentUser.role==='staff' ) { %>
+      <div class="staff-show">
+        <h3>Thank You Your Request has been sent</h3>
+        <div class="user-address">
+          <p class="">
+            Location: <span>
+              <%= request.location %>
+            </span>
+          </p>
+          <p class="">
+            Destination: <span>
+              <%= request.destination %>
+            </span>
+          </p>
+          <p class="stats-approved">Approved</p>
+          <p class="stats-pending">Pending</p>
+          <p class="stats-rejected">Rejected</p>
+          <a href="/pages/<%=request._id%>/edit">Edit</a>
+          <button>Delete</button>
+        </div>
+      </div>
+      <% } %>
+  </div>

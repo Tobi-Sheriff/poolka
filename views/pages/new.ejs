@@ -1,5 +1,8 @@
 <% layout('layouts/boilerplate')%>
 
+
+<div class="container">
+
 <!-- <form action="/pages" method="POST">
     <input type="text" placeholder="Film Name" name="name">
     <input type="text" placeholder="IMDB ID" name="id">
@@ -13,7 +16,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Places Autocomplete</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5F_ddnM9n87kZh_7apWpZcVw8CPvPX3Y&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=HEY-VALUE&libraries=places"></script>
 </head>
 <body> -->
     <!-- <form action="places-proxy" method="get"> -->
@@ -31,3 +34,29 @@
     </script> -->
 <!-- </body>
 </html> -->
+
+
+
+    <div class="staff-inner-container">
+        <div class="welcome-message">
+            <h1>POOLKA</h1>
+            <p>WHERE DO YOU WANT TO GO TODAY?</p>
+        </div>
+
+        <form class="form-box" id="address-form" action="/pages" method="POST" autocomplete="off">
+            <label class="full-field">
+                <!-- Avoid the word "address" in id, name, or label text to avoid browser autofill from conflicting with Place Autocomplete. Star or comment bug https://crbug.com/587466 to request Chromium to honor autocomplete="off" attribute. -->
+                <span class="form-label">Your Location</span>
+                <input id="autocomplete-location" name="address[location]" required autocomplete="off" />
+            </label>
+            <label class="full-field">
+                <!-- Avoid the word "address" in id, name, or label text to avoid browser autofill from conflicting with Place Autocomplete. Star or comment bug https://crbug.com/587466 to request Chromium to honor autocomplete="off" attribute. -->
+                <span class="form-label">Your Destination</span>
+                <input id="autocomplete-destination" name="address[destination]" required autocomplete="off" />
+            </label>
+            <!-- <input type="reset" value="Clear form" /> -->
+            <button class="my-button">Request Ride</button>
+        </form>
+    </div>
+
+</div>

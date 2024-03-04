@@ -1,7 +1,20 @@
 const { pageSchema, reviewSchema } = require('./schemas.js');
 const ExpressError = require('./utils/ExpressError');
 const Page = require('./models/page');
+const User = require('./models/user');
 // const Review = require('./models/review');
+
+
+module.exports.isAdmin = async (req, res, next) => {
+    // const { id } = req.params;
+    const user = await User.findById(id);
+    const adminUser = req.currentUer;
+    if (adminUser.role != 'admin') {
+        req.flash('error', 'You do are not admin');
+        return res.redirect(`/pages`);
+    }
+    next();
+}
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {

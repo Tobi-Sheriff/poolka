@@ -5,7 +5,7 @@ module.exports.renderRegister = (req, res) => {
 }
 module.exports.register = async (req, res, next) => {
     try {
-        const { email, username, password} = req.body;
+        const { email, username, password } = req.body;
         const user = new User({ email, username });
         const registeredUser = await User.register(user, password);
         req.login(registeredUser, err => {
@@ -36,8 +36,14 @@ module.exports.renderProfile = (req, res) => {
 module.exports.updateUserProfile = async (req, res) => {
     const { id } = req.params;
     const user = await User.findByIdAndUpdate(id, { ...req.body.profile });
+    // const staffRole = document.querySelector('#staffRole');
+    // user.staff = staffRole.innerText
+    // console.log(staffRole.innerText);
     console.log(user);
     await user.save();
+    console.log("THIS IS THE BODY:  ");
+    console.log(req.body.profile);
+    console.log(user);
     req.flash('success', 'Successfully updated user!');
     res.redirect('/pages')
 }

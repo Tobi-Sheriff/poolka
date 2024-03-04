@@ -7,13 +7,33 @@ body {
     letter-spacing: 0.8px;
 }
 
+h1 {
+    color: #ffd000;
+}
+p {
+    color: #fff;
+    font-size: medium;
+    line-height: 2;
+    text-align: start;
+    padding: 5px;
+}
+
+.form-side-nav form {
+    padding: 5px;
+}
+
+.admin-show-side-nav p {
+    font-size: small;
+    line-height: 1.5;
+    margin-bottom: 2px;
+}
 
 .header {
     background-image: -webkit-cross-fade(url("../images/pikb29.jpg"), url("../images/pblaq.jpg"), 90%);
     /* background-image: cross-fade(url("w4.jpg") 50%, url("blaq.jpg") 50%); */
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100vh;
+    /* height: 100vh; */
     font-weight: 600;
     line-height: 2;
 }
@@ -56,24 +76,31 @@ transition-delay: 0s; */
 }
 
 
-.header .container {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
+.staff-inner-container {
+    width: max-content;
+    margin: auto;
+    color: #fff;
+    padding-inline: 10px;
 }
-.header .info-inner-container .welcome-message {
+
+
+.header .welcome-message {
     text-align: center;
 }
-.header .info-inner-container .welcome-message h1 {
+.welcome-message p {
+    text-align: center;
+}
+
+/* .header .info-inner-container .welcome-message h1 {
     font-size: 70px;
     font-weight: 700;
     color: #ffd000;
     margin-bottom: 20px;
-}
-.header .info-inner-container .welcome-message p {
+} */
+/* .header .info-inner-container .welcome-message p {
     color: #fff;
     line-height: 2;
-}
+} */
 
 .header .info-inner-container .book-ur-car {
     margin-top: 150px;
@@ -83,6 +110,32 @@ transition-delay: 0s; */
     flex-direction: row;
 }
 
+
+.container {
+    /* display: flex; */
+    /* justify-content: center; */
+    margin: auto;
+    margin-top: 50px;
+}
+
+/* .admin-view {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: inherit;
+} */
+
+/* .inner-admin-view {
+    display: block;
+} */
+
+.driver-nav {
+    display: flex;
+}
+.driver-nav-child{
+    background-color: inherit;
+    padding: 10px;
+    /* width: 500px; */
+}
 
 /* NEW FORM BEGINS */
 form {
@@ -190,21 +243,38 @@ input[type=reset] {
     text-align: center;
     margin-top: 5%;
 }
-.container-show h3 {
+/* .container-show h3 { */
+h3 {
     font-size: 30px;
     font-weight: 700;
-    color: #ffd000;
+    color: #fff;
     margin-bottom: 20px;
 }
-.container-show .user-address {
-    color: #fff;
+.staff-show {
+    width: max-content;
+    margin: auto;
 }
-.container-show p {
+.user-address {
+    display: flex;
+    flex-wrap: wrap;
+    color: #fff;
+    margin: auto;
+}
+.user-address .stats-approved {
+    color: green;
+}
+.user-address .stats-pending {
+    color: yellow;
+}
+.user-address .stats-rejected {
+    color: red;
+}
+/* .container-show p {
     margin-bottom: 0;
     line-height: 2;
     font-size: 18px;
     color: #ffd000;
-}
+} */
 .container-show p span{
     text-transform: uppercase;
     color: #fff;

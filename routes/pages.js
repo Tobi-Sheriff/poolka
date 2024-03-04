@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pages = require('../controllers/pages');
 const catchAsync = require('../utils/catchAsync');
-const { isLoggedIn, isAuthor, validatePage } = require('../middleware');
+const { isAdmin, isLoggedIn, isAuthor, validatePage } = require('../middleware');
 const multer = require('multer');
 const { storage } = require('../cloudinary');
 const upload = multer({ storage });
@@ -17,14 +17,18 @@ router.route('/')
 
 router.get('/new', isLoggedIn, pages.renderNewForm)
 
-router.get('/show', pages.pageShow)
 
+router.route('/admin/:id')
+    .get(isAdmin, catchAsync(pages.adminShowPage))
+
+// router.get('/show/:id', pages.pageShow)
 router.route('/:id')
     .get(catchAsync(pages.showPage))
+    // .get(isAdmin, pages.pageShow)
     .put(isLoggedIn, isAuthor, upload.array('image'), validatePage, catchAsync(pages.updatePage))
     .delete(isLoggedIn, isAuthor, catchAsync(pages.deletePage));
 
-router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(pages.renderEditForm))
+router.get('/:id/edit', catchAsync(pages.renderEditForm))
 
 
 module.exports = router;

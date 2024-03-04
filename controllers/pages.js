@@ -2,6 +2,7 @@ if (process.env.NOD_ENV !== "production") {
     require('dotenv').config();
 }
 const Page = require('../models/page');
+const Request = require('../models/request');
 const User = require('../models/user');
 const { cloudinary } = require("../cloudinary");
 // const {Client} = require("@googlemaps/google-maps-services-js");
@@ -97,45 +98,60 @@ module.exports.index = async (req, res) => {
     //     .catch(e => {
     //         console.log(e);
     //     });
-    res.render('pages/index');
+    const requests = await Request.find({}).populate('author');
+    res.render('pages/index', { requests });
 }
 
-module.exports.pageShow = (req, res) => {
-    const {location, destination} = req.query;
-    res.render('pages/show', { location, destination});
+module.exports.adminShowPage = async (req, res,) => {
+    // const { id } = req.params;
+    res.render('pages/show');
 }
-module.exports.requestRide = (req, res, next) => {
-    // const page = new Page(req.body.page);
-    // page.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
-    // page.author = req.user._id;
-    // await page.save();
+module.exports.pageShow = async (req, res) => {
+    // const {location, destination} = req.query;
+    // const { id } = req.params;
+    // const request = await Request.findById(id).populate('author');
+    // const users = await User.find({});
+    // console.log(request);
+    // console.log(users);
+    // const requests = await Request.find({}).populate('author');
+    // res.render('pages/show', { request, users });
+}
+module.exports.requestRide = async (req, res, next) => {
+    const request = new Request(req.body.address);
+    request.author = req.user._id;
+    await request.save();
     req.flash('success', 'Successfully made a new page!');
-    res.redirect(`/pages/show`);
+    res.redirect(`/pages/${request._id}`);
 }
 
 module.exports.showPage = async (req, res,) => {
-    const page = await Page.findById(req.params.id).populate({
-        path: 'images',
-        // path: 'reviews',
-        populate: {
-            path: 'author'
-        }
-    }).populate('author');
-    if (!page) {
-        req.flash('error', 'Cannot find that page!');
-        return res.redirect('/pages');
-    }
-    res.render('pages/show', { page });
+    // const page = await Page.findById(req.params.id).populate({
+    //     path: 'images',
+    //     path: 'reviews',
+    //     populate: {
+    //         path: 'author'
+    //     }
+    // }).populate('author');
+    // if (!page) {
+    //     req.flash('error', 'Cannot find that page!');
+    //     return res.redirect('/pages');
+    // }
+    const { id } = req.params;
+    const users = await User.find({});
+    console.log(users);
+    const request = await Request.findById(id);
+    res.render('pages/show', { request, users });
 }
 
 module.exports.renderEditForm = async (req, res) => {
-    const { id } = req.params;
-    const page = await Page.findById(id)
-    if (!page) {
-        req.flash('error', 'Cannot find that page!');
-        return res.redirect('/pages');
-    }
-    res.render('pages/edit', { page });
+    // const { id } = req.params;
+    // const page = await Page.findById(id)
+    // if (!page) {
+    //     req.flash('error', 'Cannot find that page!');
+    //     return res.redirect('/pages');
+    // }
+    // res.render('pages/edit', { page });
+    res.render('pages/edit');
 }
 
 module.exports.updatePage = async (req, res) => {

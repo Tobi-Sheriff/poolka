@@ -17,8 +17,14 @@
                 <label for="secondName">Second Name</label>
                 <input class="form-control" type="text" name="profile[secondName]" id="secondName" required />
 
-                <label for="role">Staffing</label>
-                <input class="form-control" type="text" name="profile[role]" id="role" required />
+                <label for="role">Role</label>
+                <select name="profile[role]" id="staffRole">
+                    <option value="select">select staff role</option>
+                    <option value="staff">Staff</option>
+                    <option value="admin">Admin</option>
+                    <option value="driver">Driver</option>
+                </select>
+                <!-- <input class="form-control" type="text" name="profile[role]" id="role" required /> -->
 
                 <input type="submit" class="form-control submit-btn">
             </form>

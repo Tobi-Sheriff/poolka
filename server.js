@@ -14,13 +14,15 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
-const userRoutes = require('./routes/users');
-// const profileRoutes = require('./routes/profiles');
 const pageRoutes = require('./routes/pages');
+const userRoutes = require('./routes/users');
+const reviewRequest = require('./routes/requests');
+// const profileRoutes = require('./routes/profiles');
 const ExpressError = require('./utils/ExpressError');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require("connect-mongo");
+const { NONE } = require('express-csp-header');
 // const bodyParser = require('body-parser')
 
 // const apiKey = process.env.GOOGLE_MAPS_API_KEY;
@@ -78,9 +80,9 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 app.use(helmet({
-    xContentTypeOptions: {
-        noSniff: false,
-    },
+    // xContentTypeOptions: {
+    //     noSniff: false,
+    // },
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
@@ -98,7 +100,7 @@ app.use(helmet({
                 "https://maps.gstatic.com",
                 "blob:",
                 "data:",
-            ]
+            ],
 
             // Add more directives as needed
 
@@ -150,7 +152,7 @@ app.get('/home', (req, res) => {
 });
 app.use('/', userRoutes);
 app.use('/pages', pageRoutes);
-// app.use('/campgrounds/:id/reviews', reviewRoutes);
+app.use('/pages/:requestId', reviewRequest);
 
 
 // app.all('*', (req, res, next) => {

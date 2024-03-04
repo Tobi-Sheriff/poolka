@@ -3,60 +3,101 @@
 <!-- <div id="userLocator"></div>
 <button id="clickMe">click</button> -->
 
+<h1 style="text-align: center;">WELCOME <%= currentUser.username %></h1>
 <section id="info" class="container">
   <%  if( currentUser && currentUser.role === undefined)  { %>
     <div class="info-inner-container">
       <div class="welcome-message">
         <h1>POOLKA</h1>
-        <p>WELCOME <%= currentUser.username %></p>
         <a href="/users/profile/<%= currentUser._id %>">Create Profile To Continue</a>
       </div>
     </div>
-  <% } else if( currentUser && currentUser.role == 'staff')  { %>
-    <div class="info-inner-container">
-      <div class="welcome-message">
-        <h1>POOLKA</h1>
-        <p>
-          WELCOME <%= currentUser.username %>
-          <br> WHERE DO YOU WANT TO GO TODAY?
-        </p>
-      </div>
-
-      <form class="form-box" id="address-form" action="/pages/show" method="GET" autocomplete="off">
-        <label class="full-field">
-          <!-- Avoid the word "address" in id, name, or label text to avoid browser autofill from conflicting with Place Autocomplete. Star or comment bug https://crbug.com/587466 to request Chromium to honor autocomplete="off" attribute. -->
-          <span class="form-label">Your Location</span>
-          <input
-            id="autocomplete-location"
-            name="location"
-            required
-            autocomplete="off"
-          />
-        </label>
-        <label class="full-field">
-          <!-- Avoid the word "address" in id, name, or label text to avoid browser autofill from conflicting with Place Autocomplete. Star or comment bug https://crbug.com/587466 to request Chromium to honor autocomplete="off" attribute. -->
-          <span class="form-label">Your Destination</span>
-          <input
-            id="autocomplete-destination"
-            name="destination"
-            required
-            autocomplete="off"
-          />
-        </label>
-        <!-- <input type="reset" value="Clear form" /> -->
-        <button class="my-button">Request Ride</button>
-      </form>
+  <% } else if( currentUser && currentUser.role === 'admin' )  { %>
+    <div class="list-group info-inner-container admin-view">
+      <% for (let request of requests){%>
+        <!-- <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+          The current link item
+        </a> -->
+        <a href="/pages/<%= request._id %>" class="list-group-item list-group-item-action">
+          Request for ride from <b><%= request.author.username %></b>
+        </a>
+        <!-- <a class="list-group-item list-group-item-action disabled" aria-disabled="true">
+          A disabled link item
+        </a> -->
+      <% } %>
     </div>
 
-  <% } else if( currentUser && (profile.role === 'admin'))  { %>
-      <div class="info-inner-container">
-        <div class="welcome-message">
-          <h1>POOLKA</h1>
-          <p>WELCOME <%= currentUser.username %></p>
-          <form action="/users/profile" method="GET" class="form-box">
-            <button class="my-button">Create Profile to continue</button>
-          </form> 
+
+
+
+
+  <% } else if( currentUser && currentUser.role == 'staff')  { %>
+    <div class="staff-inner-container">
+      <p>You have a pending request</p>
+      <a href="/pages/new">Make a new request</a>
+      <% for (let request of requests){%>
+        <%  if( currentUser && request.author.equals(currentUser._id))  {%>
+          <a href="/pages/<%= request._id %>">View my request</a>
+        <% }%>
+      <% } %>
+  
+      <p>You have no pending request</p>
+      <a href="/pages/new">Request a driver</a>
+  
+      <h3>Available Drivers</h3>
+      <ul>
+        <li>Driver one</li>
+        <li>Driver two</li>
+        <li>Driver three</li>
+      </ul>
+    </div>
+
+
+
+
+
+  <% } else if( currentUser && currentUser.role == 'driver')  { %>
+    <!-- <div class="staff-inner-container">
+      <h3>This is the driver</h3>
+      <div class="input-group">
+        <div class="input-group-text">
+          <input class="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input">
+        </div>
+        Available
+        <input type="text" class="form-control" aria-label="Text input with radio button">
+      </div>
+    </div> -->
+
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-lg-3">
+          <h3>Driver Status</h3>
+          <div class="side-nav">
+            <p class="">Username: <span><%= currentUser.username %></span></p>
+            <p class="">Firstname: <span><%= currentUser.firstName %></span> </p>
+            <p class="">Lastname: <span><%= currentUser.secondName %></span></p>
+          </div>
+        </div>
+
+        <div class="col-lg-9">
+          <h3>Staff Requests</h3>
+          <!-- <div>
+            <h1>IF NO REQUEST</h1>
+            <P>SHOW NO REQUEST</P>
+          </div> -->
+          <div class="list-group info-inner-container admin-view">
+            <div class="driver-nav">
+            <% for (let request of requests){%>
+              <a href="/pages/<%= request._id %>" class="list-group-item list-group-item-action">
+                Request for ride from <b><%= request.author.username %></b>
+              </a>
+              
+            <% } %>
+            </div>
+          </div>            
         </div>
       </div>
+    </div>
+
   <% } %>
 </section>
